@@ -1,32 +1,30 @@
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import ProtectedRoute from './components/common/ProtectedRoute';
+import { authService } from './services/authService';
+
 function App() {
+  const isAuthenticated = authService.isAuthenticated();
+
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center text-gray-900">
-          Pump Master
-        </h1>
-        <p className="text-center text-gray-600">
-          Project setup complete! ✅
-        </p>
-        <div className="space-y-2">
-          <p className="text-sm text-gray-500">
-            ✓ React + TypeScript + Vite
-          </p>
-          <p className="text-sm text-gray-500">
-            ✓ Tailwind CSS configured
-          </p>
-          <p className="text-sm text-gray-500">
-            ✓ All dependencies installed
-          </p>
-          <p className="text-sm text-gray-500">
-            ✓ Folder structure created
-          </p>
-        </div>
-        <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
-          Ready to Start!
-        </button>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/"
+          element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />}
+        />
+      </Routes>
+    </Router>
   );
 }
 
