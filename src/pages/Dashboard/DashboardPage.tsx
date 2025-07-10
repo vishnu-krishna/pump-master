@@ -13,7 +13,6 @@ import EditPumpModal from 'src/components/pumps/EditPumpModal';
 import Spinner from 'src/components/common/Spinner';
 import StatusBadge from 'src/components/common/StatusBadge';
 import toast from 'react-hot-toast';
-import { Navbar } from '@heroui/navbar';
 
 const DashboardPage = () => {
     const navigate = useNavigate();
@@ -189,8 +188,8 @@ const DashboardPage = () => {
     return (
         <>
             {/* Navbar */}
-            <Navbar className='bg-white shadow-sm border-b border-gray-200 '>
-                <div className=' mx-auto px-4 flex justify-between items-center h-16'>
+            <div className='bg-white shadow-sm border-b border-gray-200 w-full'>
+                <div className='w-full px-[30px] flex justify-between items-center h-16'>
                     <span className='font-semibold text-xl'>PumpMaster</span>
                     <Dropdown placement='bottom-end'>
                         <DropdownTrigger>
@@ -218,7 +217,7 @@ const DashboardPage = () => {
                         </DropdownMenu>
                     </Dropdown>
                 </div>
-            </Navbar>
+            </div>
             <div className='min-h-screen bg-gray-50 page-container'>
                 {/* Main Content */}
                 <div className='container mx-auto px-4 py-8'>
