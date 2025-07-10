@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Modal,
     ModalContent,
@@ -15,14 +16,22 @@ interface EditPumpModalProps {
 }
 
 const EditPumpModal = ({ isOpen, onClose, pump, onSubmit }: EditPumpModalProps) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     if (!pump) return null;
 
     const handleSubmit = async (data: PumpFormData) => {
-        await onSubmit(data);
-        onClose();
+        try {
+            setIsSubmitting(true);
+            await onSubmit(data);
+            onClose();
+        } catch (error) {
+            // Error is handled by parent component
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    // Convert pump data to form data format
     const initialData: PumpFormData = {
         name: pump.name,
         type: pump.type,
@@ -41,12 +50,14 @@ const EditPumpModal = ({ isOpen, onClose, pump, onSubmit }: EditPumpModalProps) 
             onClose={onClose}
             size="2xl"
             scrollBehavior="inside"
+            isDismissable={!isSubmitting}
+            hideCloseButton={isSubmitting}
         >
             <ModalContent>
                 {() => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">
-                            Edit Pump: {pump.name}
+                            Edit Pump - {pump.name}
                         </ModalHeader>
                         <ModalBody className="py-6">
                             <PumpForm
@@ -54,6 +65,7 @@ const EditPumpModal = ({ isOpen, onClose, pump, onSubmit }: EditPumpModalProps) 
                                 onSubmit={handleSubmit}
                                 onCancel={onClose}
                                 submitLabel="Update Pump"
+                                isLoading={isSubmitting}
                             />
                         </ModalBody>
                     </>

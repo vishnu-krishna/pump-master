@@ -9,6 +9,8 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import Spinner from '../components/common/Spinner';
+import StatusBadge from '../components/common/StatusBadge';
 
 // Fix for default markers in React Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -83,7 +85,7 @@ const PumpDetailPage = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-gray-600">Loading pump details...</div>
+                <Spinner size="lg" label="Loading pump details..." />
             </div>
         );
     }
@@ -91,19 +93,35 @@ const PumpDetailPage = () => {
     if (!pump) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-gray-600">Pump not found</div>
+                <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+                    <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-2">Pump Not Found</h2>
+                    <p className="text-gray-600 mb-6">
+                        The pump you're looking for doesn't exist or has been removed.
+                    </p>
+                    <Button
+                        color="primary"
+                        onPress={() => navigate('/dashboard')}
+                        className="w-full"
+                    >
+                        Back to Dashboard
+                    </Button>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 page-container">
             <div className="bg-white shadow-sm">
                 <div className="container mx-auto px-4 py-4">
                     <Button
                         variant="light"
                         startContent={<ArrowLeft className="w-4 h-4" />}
                         onPress={() => navigate('/dashboard')}
+                        className="transition-all duration-200 hover:translate-x-[-2px]"
                     >
                         Back to Dashboard
                     </Button>
@@ -119,7 +137,9 @@ const PumpDetailPage = () => {
                             <p className="text-sm text-gray-600">Pump ID</p>
                             <p className="font-semibold">{pump.id}</p>
                             <p className="text-sm text-gray-600 mt-2">Status</p>
-                            <p className="font-semibold">{pump.status}</p>
+                            <div className="mt-1">
+                                <StatusBadge status={pump.status} />
+                            </div>
                             <p className="text-sm text-gray-600 mt-2">Last Updated</p>
                             <p className="font-semibold">{format(new Date(pump.lastUpdated), 'yyyy-MM-dd HH:mm')}</p>
                         </div>

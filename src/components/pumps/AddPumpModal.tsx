@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Modal,
     ModalContent,
@@ -14,9 +15,18 @@ interface AddPumpModalProps {
 }
 
 const AddPumpModal = ({ isOpen, onClose, onSubmit }: AddPumpModalProps) => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const handleSubmit = async (data: PumpFormData) => {
-        await onSubmit(data);
-        onClose();
+        try {
+            setIsSubmitting(true);
+            await onSubmit(data);
+            onClose();
+        } catch (error) {
+            // Error is handled by parent component
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -25,6 +35,8 @@ const AddPumpModal = ({ isOpen, onClose, onSubmit }: AddPumpModalProps) => {
             onClose={onClose}
             size="2xl"
             scrollBehavior="inside"
+            isDismissable={!isSubmitting}
+            hideCloseButton={isSubmitting}
         >
             <ModalContent>
                 {() => (
@@ -37,6 +49,7 @@ const AddPumpModal = ({ isOpen, onClose, onSubmit }: AddPumpModalProps) => {
                                 onSubmit={handleSubmit}
                                 onCancel={onClose}
                                 submitLabel="Add Pump"
+                                isLoading={isSubmitting}
                             />
                         </ModalBody>
                     </>

@@ -11,6 +11,8 @@ import { pumpService } from '../services/pumpService';
 import type { Pump, PumpFormData } from '../types/pump.types';
 import AddPumpModal from '../components/pumps/AddPumpModal';
 import EditPumpModal from '../components/pumps/EditPumpModal';
+import Spinner from '../components/common/Spinner';
+import StatusBadge from '../components/common/StatusBadge';
 import toast from 'react-hot-toast';
 
 const DashboardPage = () => {
@@ -97,8 +99,10 @@ const DashboardPage = () => {
 
         try {
             const updatedPump = await pumpService.update(editingPump.id, data);
-            setPumps(pumps.map(p => p.id === updatedPump.id ? updatedPump : p));
-            toast.success('Pump updated successfully');
+            if (updatedPump) {
+                setPumps(pumps.map(p => p.id === updatedPump.id ? updatedPump : p));
+                toast.success('Pump updated successfully');
+            }
         } catch (error) {
             console.error('Failed to update pump:', error);
             toast.error('Failed to update pump');
@@ -109,6 +113,7 @@ const DashboardPage = () => {
     const columns = [
         { name: "Pump Name", uid: "name" },
         { name: "Type", uid: "type" },
+        { name: "Status", uid: "status" },
         { name: "Area/Block", uid: "area" },
         { name: "Latitude", uid: "latitude" },
         { name: "Longitude", uid: "longitude" },
@@ -124,6 +129,12 @@ const DashboardPage = () => {
         switch (columnKey) {
             case "name":
                 return <span className='font-medium'>{pump.name}</span>;
+            case "type":
+                return pump.type;
+            case "area":
+                return pump.area;
+            case "status":
+                return <StatusBadge status={pump.status} />;
             case "flowRate":
                 return `${pump.flowRate} GPM`;
             case "offset":
@@ -150,7 +161,7 @@ const DashboardPage = () => {
                             variant='light'
                             onPress={() => handleEdit(pump)}
                         >
-                            <Edit className='w-4 h-4'/>
+                            <Edit className='w-4 h-4' />
                         </Button>
                         <Button
                             isIconOnly
@@ -158,29 +169,25 @@ const DashboardPage = () => {
                             variant='light'
                             onPress={() => handleView(pump.id)}
                         >
-                            <Eye className='w-4 h-4'/>
+                            <Eye className='w-4 h-4' />
                         </Button>
                     </div>
                 );
             default:
-                const value = pump[columnKey as keyof Pump];
-                if (typeof value === 'object') {
-                    return JSON.stringify(value);
-                }
-                return value;
+                return '';
         }
     };
 
     if (loading) {
         return (
             <div className='min-h-screen bg-gray-50 flex items-center justify-center'>
-                <div className='text-gray-600'>Loading pumps...</div>
+                <Spinner size="lg" label="Loading pumps..." />
             </div>
         );
     }
 
     return (
-        <div className='min-h-screen bg-gray-50'>
+        <div className='min-h-screen bg-gray-50 page-container'>
             {/* Navbar */}
             <Navbar className='bg-white shadow-sm'>
                 <NavbarBrand>
@@ -202,7 +209,7 @@ const DashboardPage = () => {
                                 radius='full'
                                 className='w-10 h-10'
                             >
-                                <User className='w-5 h-5'/>
+                                <User className='w-5 h-5' />
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu aria-label='User menu'>
@@ -212,7 +219,7 @@ const DashboardPage = () => {
                             </DropdownItem>
                             <DropdownItem
                                 key='logout'
-                                startContent={<LogOut className='w-4 h-4'/>}
+                                startContent={<LogOut className='w-4 h-4' />}
                                 onPress={handleLogout}
                             >
                                 Log Out
@@ -229,7 +236,7 @@ const DashboardPage = () => {
                     <h1 className='text-2xl font-semibold'>Pumps</h1>
                     <Button
                         color='primary'
-                        startContent={<Plus className='w-4 h-4'/>}
+                        startContent={<Plus className='w-4 h-4' />}
                         onPress={() => setShowAddModal(true)}
                     >
                         New Pump
@@ -242,13 +249,13 @@ const DashboardPage = () => {
                         placeholder='Search pumps...'
                         value={searchQuery}
                         onValueChange={setSearchQuery}
-                        startContent={<Search className='w-4 h-4 text-gray-400'/>}
+                        startContent={<Search className='w-4 h-4 text-gray-400' />}
                         className='max-w-xs'
                     />
 
                     <Dropdown>
                         <DropdownTrigger>
-                            <Button variant='bordered' startContent={<Filter className='w-4 h-4'/>}>
+                            <Button variant='bordered' startContent={<Filter className='w-4 h-4' />}>
                                 Filter
                             </Button>
                         </DropdownTrigger>
@@ -280,7 +287,7 @@ const DashboardPage = () => {
                     <div className='bg-white rounded-lg border border-gray-200 p-16 text-center'>
                         <div className='max-w-sm mx-auto'>
                             <svg className='w-12 h-12 text-gray-400 mx-auto mb-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'/>
+                                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10' />
                             </svg>
                             <h3 className='text-lg font-medium text-gray-900 mb-2'>No pumps found</h3>
                             <p className='text-gray-500'>
@@ -292,7 +299,7 @@ const DashboardPage = () => {
                                 <Button
                                     color='primary'
                                     className='mt-4'
-                                    startContent={<Plus className='w-4 h-4'/>}
+                                    startContent={<Plus className='w-4 h-4' />}
                                     onPress={() => setShowAddModal(true)}
                                 >
                                     Add First Pump
@@ -317,7 +324,7 @@ const DashboardPage = () => {
                             {(pump) => (
                                 <TableRow
                                     key={pump.id}
-                                    className='cursor-pointer hover:bg-gray-50'
+                                    className='cursor-pointer hover:bg-gray-50 transition-colors duration-150'
                                 >
                                     {(columnKey) => <TableCell>{renderCell(pump, columnKey)}</TableCell>}
                                 </TableRow>

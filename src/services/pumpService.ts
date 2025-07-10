@@ -41,16 +41,6 @@ export const pumpService = {
         return await pumpApi.update(id, updates);
     },
 
-    async getPressureHistory(id: string, hours: number = 24) {
-        if (USE_MOCK) {
-            await new Promise(resolve => setTimeout(resolve, 300));
-            // Use the pressure data generator from mockData
-            const { generatePressureData } = await import('../utils/mockData');
-            return generatePressureData(hours);
-        }
-        return await pumpApi.getPressureHistory(id, hours);
-    },
-
     // Utility method for resetting demo data
     resetToDemo() {
         if (USE_MOCK) {
