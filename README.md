@@ -2,6 +2,14 @@
 
 A modern web application for managing agricultural irrigation pumps across multiple locations. Built with React, TypeScript, and designed for seamless integration with a C# Web API backend.
 
+## 🌐 Live Demo
+
+**[View Live Application →](https://pump-master-wine.vercel.app/)**
+
+Experience the application with demo credentials:
+- **Username:** demo
+- **Password:** demo123
+
 ## 🚀 Quick Start
 
 ### Prerequisites
