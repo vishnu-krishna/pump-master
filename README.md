@@ -16,6 +16,16 @@ Experience the application with demo credentials:
 
 *The demo showcases the complete user flow: login, dashboard navigation, pump management, search/filter functionality, and detailed pump views with maps and charts.*
 
+## 🧪 Test Results
+
+![Test Results](./docs/assets/TestResults.png)
+
+The application includes comprehensive unit tests for all major components:
+- **39 Tests** covering authentication, CRUD operations, search/filter, navigation, and error handling
+- **3 Test Suites** for LoginPage, DashboardPage, and PumpDetailPage
+- **100% Pass Rate** ensuring code reliability
+- Tests written using Vitest and React Testing Library following best practices
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -215,16 +225,6 @@ npm test         # Run unit tests
 npm run test:ui  # Run tests with UI
 npm run test:coverage # Generate test coverage report
 ```
-
-## 🧪 Test Results
-
-![Test Results](./docs/assets/TestResults.png)
-
-The application includes comprehensive unit tests for all major components:
-- **39 Tests** covering authentication, CRUD operations, search/filter, navigation, and error handling
-- **3 Test Suites** for LoginPage, DashboardPage, and PumpDetailPage
-- **100% Pass Rate** ensuring code reliability
-- Tests written using Vitest and React Testing Library following best practices
 
 ## 📝 Notes for Backend Integration
 
