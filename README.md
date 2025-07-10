@@ -10,6 +10,12 @@ Experience the application with demo credentials:
 - **Username:** demo
 - **Password:** demo123
 
+## 🎥 Application Demo
+
+![PumpMaster Demo](./docs/assets/Demo.gif)
+
+*The demo showcases the complete user flow: login, dashboard navigation, pump management, search/filter functionality, and detailed pump views with maps and charts.*
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -205,7 +211,20 @@ npm run build    # Build for production
 npm run preview  # Preview production build
 npm run lint     # Run ESLint
 npm run type-check # Run TypeScript compiler
+npm test         # Run unit tests
+npm run test:ui  # Run tests with UI
+npm run test:coverage # Generate test coverage report
 ```
+
+## 🧪 Test Results
+
+![Test Results](./docs/assets/TestResults.png)
+
+The application includes comprehensive unit tests for all major components:
+- **39 Tests** covering authentication, CRUD operations, search/filter, navigation, and error handling
+- **3 Test Suites** for LoginPage, DashboardPage, and PumpDetailPage
+- **100% Pass Rate** ensuring code reliability
+- Tests written using Vitest and React Testing Library following best practices
 
 ## 📝 Notes for Backend Integration
 
