@@ -30,9 +30,26 @@
       "src/*": [
         "src/*"
       ]
-    }
+    },
+    /* Explicitly exclude test types */
+    "types": [
+      "vite/client",
+      "leaflet",
+      "react",
+      "react-dom",
+      "react-router-dom"
+    ]
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/test/**/*",
+    "node_modules",
+    "vitest.config.ts"
   ]
 }
