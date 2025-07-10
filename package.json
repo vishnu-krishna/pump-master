@@ -10,9 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroui/button": "^2.2.22",
+    "@heroui/input": "^2.4.22",
+    "@heroui/modal": "^2.2.19",
+    "@heroui/system": "^2.4.18",
+    "@heroui/table": "^2.2.21",
+    "@heroui/theme": "^2.4.17",
     "axios": "^1.10.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.23.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",

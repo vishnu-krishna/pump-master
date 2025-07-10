@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Ensure Roboto font is applied globally */
+body {
+    font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+}
