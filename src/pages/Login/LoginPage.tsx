@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@heroui/button';
 import { Input } from '@heroui/input';
-import { authService } from '../services/authService';
-import { DEMO_CREDENTIALS } from '../utils/mockData';
+import { authService } from 'src/services/authService.ts';
+import { DEMO_CREDENTIALS } from 'src/utils/mockData.ts';
 
 const LoginPage = () => {
     const navigate = useNavigate();

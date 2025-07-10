@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@heroui/button';
 import { ArrowLeft } from 'lucide-react';
-import { pumpService } from '../services/pumpService';
-import type { Pump } from '../types/pump.types';
+import { pumpService } from 'src/services/pumpService.ts';
+import type { Pump } from 'src/types/pump.types.ts';
 import { format } from 'date-fns';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import Spinner from '../components/common/Spinner';
-import StatusBadge from '../components/common/StatusBadge';
+import Spinner from 'src/components/common/Spinner.tsx';
+import StatusBadge from 'src/components/common/StatusBadge.tsx';
 
 // Fix for default markers in React Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
