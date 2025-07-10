@@ -6,3 +6,72 @@
 body {
     font-family: 'Roboto', system-ui, -apple-system, sans-serif;
 }
+
+/* Override HeroUI Input default black borders */
+[data-slot="input-wrapper"] {
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(209 213 219 / var(--tw-border-opacity)) !important;
+}
+
+[data-slot="input-wrapper"]:hover {
+    border-color: rgb(156 163 175 / var(--tw-border-opacity)) !important;
+}
+
+[data-slot="input-wrapper"]:focus-within {
+    border-color: rgb(59 130 246 / var(--tw-border-opacity)) !important;
+}
+
+/* Remove inner rectangular outline from input elements */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+/* Remove focus styles that might create inner rectangles */
+input:focus {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Override Tailwind Forms plugin default styles */
+[type='text']:focus,
+[type='email']:focus,
+[type='url']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='month']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+[type='time']:focus,
+[type='week']:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    --tw-ring-offset-shadow: none !important;
+    --tw-ring-shadow: none !important;
+}
+
+/* Leaflet fixes */
+.leaflet-container {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.leaflet-pane {
+    z-index: 1;
+}
+
+.leaflet-control-container {
+    z-index: 2;
+}

@@ -2,11 +2,17 @@ import type { Pump, PumpFormData } from '../types/pump.types';
 import { DEMO_PUMPS } from '../utils/mockData';
 
 const STORAGE_KEY = 'pumps';
+const VERSION_KEY = 'pumps_version';
+const CURRENT_VERSION = '2.0'; // Increment this to force data refresh
 
 // Initialize localStorage with demo data
 export const initializeData = () => {
-    if (!localStorage.getItem(STORAGE_KEY)) {
+    const storedVersion = localStorage.getItem(VERSION_KEY);
+
+    // Force refresh if version mismatch or no data
+    if (storedVersion !== CURRENT_VERSION || !localStorage.getItem(STORAGE_KEY)) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_PUMPS));
+        localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
     }
 };
 

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@heroui/button';
+import { Input } from '@heroui/input';
 import { authService } from '../services/authService';
 import { DEMO_CREDENTIALS } from '../utils/mockData';
-import { Button } from '@heroui/button';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -32,7 +33,6 @@ const LoginPage = () => {
 
     return (
         <div className='min-h-screen bg-white flex items-center justify-center px-4'>
-            <Button>Hello</Button>
             <div className='w-full max-w-md mx-auto'>
                 <div className='bg-white shadow-lg rounded-lg'>
                     {/* Main content */}
@@ -46,35 +46,37 @@ const LoginPage = () => {
                         <h2 className='text-2xl font-semibold text-center text-black mb-8'>Welcome back</h2>
 
                         <form onSubmit={handleSubmit} className='space-y-6'>
-                            <div>
-                                <label htmlFor='username' className='block text-sm font-medium text-black mb-2'>
-                                    Username
-                                </label>
-                                <input
-                                    id='username'
-                                    type='text'
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    placeholder='Enter your username'
-                                    className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-black'
-                                    required
-                                />
-                            </div>
+                            <Input
+                                label='Username'
+                                labelPlacement='outside'
+                                placeholder='Enter your username'
+                                value={username}
+                                onValueChange={setUsername}
+                                variant='bordered'
+                                className={'pb-5'}
+                                classNames={{
+                                    label: "text-sm font-medium text-black mb-2",
+                                    input: "placeholder-gray-400",
+                                    inputWrapper: "border-gray-300 hover:border-gray-400 focus-within:!border-blue-500"
+                                }}
+                                isRequired
+                            />
 
-                            <div>
-                                <label htmlFor='password' className='block text-sm font-medium text-black mb-2'>
-                                    Password
-                                </label>
-                                <input
-                                    id='password'
-                                    type='password'
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder='Enter your password'
-                                    className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-black'
-                                    required
-                                />
-                            </div>
+                            <Input
+                                label='Password'
+                                labelPlacement='outside'
+                                placeholder='Enter your password'
+                                type='password'
+                                value={password}
+                                onValueChange={setPassword}
+                                variant='bordered'
+                                classNames={{
+                                    label: "text-sm font-medium text-black mb-2",
+                                    input: "placeholder-gray-400",
+                                    inputWrapper: "border-gray-300 hover:border-gray-400 focus-within:!border-blue-500"
+                                }}
+                                isRequired
+                            />
 
                             {error && (
                                 <div className='text-sm text-red-600 bg-red-50 p-3 rounded-md'>
@@ -82,13 +84,14 @@ const LoginPage = () => {
                                 </div>
                             )}
 
-                            <button
+                            <Button
                                 type='submit'
-                                disabled={loading}
-                                className='w-full bg-blue-600 text-white py-2.5 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium'
+                                className='w-full'
+                                color='primary'
+                                isLoading={loading}
                             >
                                 {loading ? 'Logging in...' : 'Log in'}
-                            </button>
+                            </Button>
                         </form>
                     </div>
 

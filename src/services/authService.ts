@@ -1,86 +1,92 @@
 import apiClient from './api/apiClient';
-
-interface User {
-    id: string;
-    username: string;
-    name: string;
-    role: string;
-}
+import { DEMO_CREDENTIALS } from '../utils/mockData';
 
 interface LoginResponse {
     success: boolean;
-    user?: User;
+    token?: string;
+    user?: {
+        id: string;
+        name: string;
+        email: string;
+    };
     error?: string;
-    accessToken?: string;
-    refreshToken?: string;
 }
 
 class AuthService {
-    private readonly USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || !import.meta.env.VITE_API_URL;
+    private readonly AUTH_TOKEN_KEY = 'auth_token';
+    private readonly USER_KEY = 'user_data';
 
     async login(username: string, password: string): Promise<LoginResponse> {
-        if (this.USE_MOCK) {
+        const useMock = import.meta.env.VITE_USE_MOCK === 'true';
+
+        if (useMock) {
             // Mock authentication
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            if (username === 'demo' && password === 'demo123') {
-                const mockUser: User = {
-                    id: '1',
-                    username: 'demo',
-                    name: 'Demo User',
-                    role: 'operator'
-                };
-
-                const mockToken = 'mock-jwt-' + Date.now();
-
-                localStorage.setItem('authToken', mockToken);
-                localStorage.setItem('user', JSON.stringify(mockUser));
-
-                return { success: true, user: mockUser };
-            }
-
-            return {
-                success: false,
-                error: 'Invalid username or password'
-            };
-        } else {
-            // Production: Call C# backend
-            try {
-                const { data } = await apiClient.post('/auth/login', { username, password });
-
-                localStorage.setItem('authToken', data.accessToken);
-                localStorage.setItem('refreshToken', data.refreshToken);
-                localStorage.setItem('user', JSON.stringify(data.user));
-
+            if (username === DEMO_CREDENTIALS.username && password === DEMO_CREDENTIALS.password) {
+                const mockToken = 'mock_jwt_token_' + Date.now();
+                this.setToken(mockToken);
+                this.setUser(DEMO_CREDENTIALS.user);
                 return {
                     success: true,
-                    user: data.user,
-                    accessToken: data.accessToken,
-                    refreshToken: data.refreshToken
-                };
-            } catch (error: any) {
-                return {
-                    success: false,
-                    error: error.response?.data?.message || 'Login failed'
+                    token: mockToken,
+                    user: DEMO_CREDENTIALS.user
                 };
             }
+            return { success: false, error: 'Invalid credentials' };
+        }
+
+        try {
+            // Real API call
+            const response = await apiClient.post<LoginResponse>('/auth/login', {
+                username,
+                password
+            });
+
+            if (response.data.success && response.data.token) {
+                this.setToken(response.data.token);
+                if (response.data.user) {
+                    this.setUser(response.data.user);
+                }
+            }
+
+            return response.data;
+        } catch (error) {
+            return { success: false, error: 'Login failed' };
         }
     }
 
-    logout() {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+    logout(): void {
+        this.removeToken();
+        this.removeUser();
+        // In real app, might also call API to invalidate token
     }
 
     isAuthenticated(): boolean {
-        return !!localStorage.getItem('authToken');
+        return !!this.getToken();
     }
 
-    getCurrentUser(): User | null {
-        const userStr = localStorage.getItem('user');
-        return userStr ? JSON.parse(userStr) : null;
+    getToken(): string | null {
+        return localStorage.getItem(this.AUTH_TOKEN_KEY);
+    }
+
+    private setToken(token: string): void {
+        localStorage.setItem(this.AUTH_TOKEN_KEY, token);
+    }
+
+    private removeToken(): void {
+        localStorage.removeItem(this.AUTH_TOKEN_KEY);
+    }
+
+    getUser(): { id: string; name: string; email: string } | null {
+        const userData = localStorage.getItem(this.USER_KEY);
+        return userData ? JSON.parse(userData) : null;
+    }
+
+    private setUser(user: { id: string; name: string; email: string }): void {
+        localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    }
+
+    private removeUser(): void {
+        localStorage.removeItem(this.USER_KEY);
     }
 }
 
